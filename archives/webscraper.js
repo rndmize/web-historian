@@ -22,11 +22,11 @@ var sites = JSON.parse(fs.readFileSync('./sites.json'));
 for (var i in sites) {
   if (sites[i] === false) {
     request('http://' + i, function(err, res, body) {
-      console.log(err, res, body);
+      console.log(err, res);
       fs.writeFileSync('./sites/' + i, body);
     });
     sites[i] = true;
+    fs.writeFileSync('./sites.json', JSON.stringify(sites));
   }
 }
 
-fs.writeFileSync('./sites.json', JSON.stringify(sites));
