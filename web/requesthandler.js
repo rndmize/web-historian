@@ -39,7 +39,7 @@ var getReq = function(req, res) {
 };
 
 var postReq = function(req, res){
-  console.log('PostReq...')
+  console.log('PostReq...');
   postUrl(req, res, function(data) {
     if (bs.sites[data.url]) {
       fs.readFile('../archives/sites/' + data.url, function(error, dat) {
@@ -48,9 +48,9 @@ var postReq = function(req, res){
           res.end(dat);
         }
       });
-    } else {
+    } else if (bs.sites[data.url] === undefined) {
   //    scrape and write
-     bs.sites[data.url] = true;
+     bs.sites[data.url] = false;
       fs.writeFileSync('../archives/sites.json', JSON.stringify(bs.sites));
     }
   });
