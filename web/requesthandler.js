@@ -6,6 +6,7 @@ var qs = require('querystring');
 // require more modules/folders here!
 
 var postUrl = function(req, res, callback){
+  console.log('PostURL...');
   var body ='';
   req.on('data', function (data){
     body+= data;
@@ -17,34 +18,12 @@ var postUrl = function(req, res, callback){
 };
 
 
-
-exports.handleRequest = function (req, res) {
-  // console.log(bs.sites);
-  // console.log(req);
-
-
-
-
-  res.writeHead(200);
+var getReq = function(req, res) {
+  console.log('GetReq...');
   if (req.url === '/'){
-    if (req.method === 'POST') {
-      postUrl(req, res, function(data) {
-        console.log(bs.sites[data.url]);
-        console.log(data);
-        if (bs.sites[data.url]) {
-          fs.readFile('../archives/sites/www.google.com', function(error, dat) {
-            if (!error) {
-              console.log('send this back', dat);
-              res.writeHead(200, 'Content-Type: text/html');
-              res.end(dat);
-            }
-          });
-        }
-      });
-    }
-    //serve the index
     fs.readFile('./public/index.html', function(error, data) {
       if (!error) {
+        res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end(data);
       }
     });
@@ -57,21 +36,44 @@ exports.handleRequest = function (req, res) {
       }
     });
   }
-  else if (bs.sites[req.url]){
-    /*do stuff*/
-    // If we do, retrieve and serve relevant file
-    console.log('request made for things');
-    fs.readFile('../archives/sites/www.google.com', function(error, data) {
-      if (!error){
-        res.end(data);
-      }
-    });
-  }
-  else {
+};
+
+var postReq = function(req, res){
+  console.log('PostReq...')
+  postUrl(req, res, function(data) {
+    if (bs.sites[data.url]) {
+      fs.readFile('../archives/sites/' + data.url, function(error, dat) {
+        if (!error) {
+          res.writeHead(200, { 'Content-Type': 'text/html' });
+          res.end(dat);
+        }
+      });
+    } else {
+      //scrape and write
+    }
+  });
+};
+
+var router = function(req, res) {
+  console.log('Routing...');
+  if (req.method === 'GET'){
+    getReq(req, res);
+  } else if (req.method === 'POST'){
+    postReq(req, res);
+  } else {
     res.writeHead(404);
     res.end();
   }
-  //res.end(archive.paths.list);
+};
+
+exports.handleRequest = function (req, res) {
+  console.log(req.method, req.url);
+  router(req, res);
+
+
+
+
+
 };
 
 
