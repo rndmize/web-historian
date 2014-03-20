@@ -49,7 +49,9 @@ var postReq = function(req, res){
         }
       });
     } else {
-      //scrape and write
+  //    scrape and write
+     bs.sites[data.url] = true;
+      fs.writeFileSync('../archives/sites.json', JSON.stringify(bs.sites));
     }
   });
 };
@@ -69,10 +71,6 @@ var router = function(req, res) {
 exports.handleRequest = function (req, res) {
   console.log(req.method, req.url);
   router(req, res);
-
-
-
-
 
 };
 
