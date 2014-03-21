@@ -10,7 +10,11 @@
   'www.twitter.com': true,
   'www.eset.com': true,
   'www.gaggle.com': true,
-  'www.4chan.com': true }
+  'www.4chan.com': true,
+  '': true,
+  'www.zappos.com': true,
+  'www.zapos.com': true,
+  'news.ycombinator.com': true }
 object
 i an i  www.google.com
 i an i  www.ge.com
@@ -25,3 +29,7 @@ i an i  www.twitter.com
 i an i  www.eset.com
 i an i  www.gaggle.com
 i an i  www.4chan.com
+i an i  
+i an i  www.zappos.com
+i an i  www.zapos.com
+i an i  news.ycombinator.com

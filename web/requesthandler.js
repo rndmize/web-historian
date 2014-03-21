@@ -20,14 +20,9 @@ var postUrl = function(req, res, callback){
 
 
 var getReq = function(req, res) {
+  var sites = JSON.parse(fs.readFileSync('../archives/sites.json'));
   console.log('GetReq...');
   if (req.url === '/'){
-    // fs.readFile('./public/index.html', function(error, data) {
-    //   if (!error) {
-    //     res.writeHead(200, { 'Content-Type': 'text/html' });
-    //     res.end(data);
-    //   }
-    // });
     endReq('./public', '/index.html', res);
   }
   else if (req.url === '/styles.css') {
@@ -37,9 +32,13 @@ var getReq = function(req, res) {
         res.end(data);
       }
     });
-    // endReq('./public', req.url, res);
   } else if (req.url === '/loading.html') {
     endReq('./public', req.url, res);
+  } else if (sites[req.url]) {
+    endReq('../archives/sites/', req.url, res);
+  } else {
+    res.writeHead(404);
+    res.end();
   }
 };
 
