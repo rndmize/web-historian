@@ -1,0 +1,27 @@
+{ 'www.google.com': true,
+  'www.ge.com': true,
+  'www.yahoo.com': true,
+  'www.reddit.com': true,
+  undefined: true,
+  'www.amazon.com': true,
+  'www.flibflub.com': true,
+  'www.asdfasdfsadf.com': true,
+  'www.penny-arcade.com': true,
+  'www.twitter.com': true,
+  'www.eset.com': true,
+  'www.gaggle.com': true,
+  'www.4chan.com': true }
+object
+i an i  www.google.com
+i an i  www.ge.com
+i an i  www.yahoo.com
+i an i  www.reddit.com
+i an i  undefined
+i an i  www.amazon.com
+i an i  www.flibflub.com
+i an i  www.asdfasdfsadf.com
+i an i  www.penny-arcade.com
+i an i  www.twitter.com
+i an i  www.eset.com
+i an i  www.gaggle.com
+i an i  www.4chan.com

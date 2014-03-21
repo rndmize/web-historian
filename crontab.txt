@@ -1,0 +1,1 @@
+*/1 * * * * /Users/HR10/.nvm/v0.10.25/bin/node /Users/HR10/code/AlejandroSanchez/2014-02-web-historian/archives/webscraper.js > /Users/HR10/code/AlejandroSanchez/2014-02-web-historian/archives/log.txt

@@ -5,6 +5,7 @@ var bs = require('./basic-server.js');
 var qs = require('querystring');
 // require more modules/folders here!
 
+
 var postUrl = function(req, res, callback){
   console.log('PostURL...');
   var body ='';
@@ -21,12 +22,13 @@ var postUrl = function(req, res, callback){
 var getReq = function(req, res) {
   console.log('GetReq...');
   if (req.url === '/'){
-    fs.readFile('./public/index.html', function(error, data) {
-      if (!error) {
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(data);
-      }
-    });
+    // fs.readFile('./public/index.html', function(error, data) {
+    //   if (!error) {
+    //     res.writeHead(200, { 'Content-Type': 'text/html' });
+    //     res.end(data);
+    //   }
+    // });
+    endReq('./public', '/index.html', res);
   }
   else if (req.url === '/styles.css') {
     fs.readFile('./public/styles.css', function(error, data) {
@@ -35,23 +37,25 @@ var getReq = function(req, res) {
         res.end(data);
       }
     });
+    // endReq('./public', req.url, res);
+  } else if (req.url === '/loading.html') {
+    endReq('./public', req.url, res);
   }
 };
 
 var postReq = function(req, res){
-  console.log('PostReq...');
+  var sites = JSON.parse(fs.readFileSync('../archives/sites.json'));
   postUrl(req, res, function(data) {
-    if (bs.sites[data.url]) {
-      fs.readFile('../archives/sites/' + data.url, function(error, dat) {
-        if (!error) {
-          res.writeHead(200, { 'Content-Type': 'text/html' });
-          res.end(dat);
-        }
-      });
-    } else if (bs.sites[data.url] === undefined) {
-  //    scrape and write
-     bs.sites[data.url] = false;
-      fs.writeFileSync('../archives/sites.json', JSON.stringify(bs.sites));
+    if (sites[data.url]) {
+      endReq('../archives/sites/', data.url, res);
+    } else {
+      console.log('scrape/write/redirect');
+      res.writeHead(302,  { 'Location': 'loading.html' });
+      res.end();
+      if (sites[data.url] === undefined) {
+        sites[data.url] = false;
+        fs.writeFileSync('../archives/sites.json', JSON.stringify(sites));
+      }
     }
   });
 };
@@ -68,15 +72,18 @@ var router = function(req, res) {
   }
 };
 
+var endReq = function(location, reqUrl, res){
+  fs.readFile(location + reqUrl, function(error, data){
+    if (!error){
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      res.end(data);
+    }
+  });
+  return res;
+}
+
 exports.handleRequest = function (req, res) {
   console.log(req.method, req.url);
   router(req, res);
-
 };
 
-
-
-// Get url from request
-// Check if we have that url stored
-// If not, go scrap site
-// Discard bad input
